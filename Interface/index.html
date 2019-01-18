@@ -26,46 +26,84 @@
         function pub(value,topic){
          	message = new Paho.MQTT.Message(value);
          	message.destinationName = topic;
+         	message.retained = true;
          	mqtt.send(message);
          }
 
          function onConnect() {
          // Once a connection has been made, make a subscription and send a message.
          	console.log("Connected ");
-         	mqtt.subscribe('#');
-        
+         	mqtt.subscribe('home/light_power');
+         	mqtt.subscribe('home/temperature_power');
+         	mqtt.subscribe('home/security_power');
+         	mqtt.subscribe('home/light_sensor');     
+         	mqtt.subscribe('home/blind_status');  
          }
          
          function MQTTconnect() {
          	console.log("connecting to "+ host +" "+ port);
 	        mqtt = new Paho.MQTT.Client(host,port,"/home","clientjs");
-
+	        mqtt.onMessageArrived = onMessageArrived;
 	        var options = {
 	           timeout: 3,
 	           onSuccess: onConnect,
 	        };
          	mqtt.connect(options);
          }
+
+         function onMessageArrived(message) {
+  			var new_message = message.payloadString;
+  			var topic = message.destinationName;
+  			switch(topic) {
+  				case 'home/light_power':
+  					
+  					break;
+  				case 'home/light_sensor':
+  					var val = document.getElementById("light-number").innerHTML = new_message;
+  					break;
+  				case 'home/temperature_sensor':
+  					var val = document.getElementById("temp-number").innerHTML = new_message;
+  					break;
+  				case 'home/temperature_power':
+  					
+  					break;
+  				case 'home/temperature_set':
+  					
+  					break;
+  				case 'home/security_power':
+  					
+  					break;
+  				case 'home/blind_status':
+  					
+  					break;
+  				default:
+  					alert('no hits');
+  			}
+		}
+
+
+
+
             function plus() {
          		var val = document.getElementById("set-temp-number").innerHTML; 
             	var new_val = parseInt(document.getElementById("set-temp-number").innerHTML)+1;
             	document.getElementById("set-temp-number").innerHTML = new_val; 
-            	pub(new_val.toString(),'temperature_set');
+            	pub(new_val.toString(),'home/temperature_set');
          	}
 
              function minus() {
                   var val = document.getElementById("set-temp-number").innerHTML; 
                   var new_val = parseInt(document.getElementById("set-temp-number").innerHTML)-1;
                   document.getElementById("set-temp-number").innerHTML = new_val; 
-                  pub(new_val.toString(),'temperature_set');
+                  pub(new_val.toString(),'home/temperature_set');
              }
 
              function hvac_toggle() {
              	var val = $('#hvac_slider').prop("checked");
              	if(val){
-             		pub('on','temperature_power');
+             		pub('on','home/temperature_power');
              	}else{
-             		pub('off','temperature_power');
+             		pub('off','home/temperature_power');
              	}
             
     		}
@@ -73,11 +111,29 @@
  			function light_toggle() {
              	var val = $('#light_slider').prop("checked");
              	if(val){
-             		pub('on','light_power');
+             		pub('on','home/light_power');
              	}else{
-             		pub('off','light_power');
+             		pub('off','home/light_power');
              	}
             
+    		}
+
+    		function security_toggle() {
+             	var val = $('#security_slider').prop("checked");
+             	if(val){
+             		pub('on','home/security_power');
+             	}else{
+             		pub('off','home/security_power');
+             	}
+    		}
+
+    		function blind_toggle() {
+             	var val = $('#blind_slider').prop("checked");
+             	if(val){
+             		pub('open','home/blind_status');
+             	}else{
+             		pub('closed','home/blind_status');
+             	}
     		}
 
          
@@ -89,13 +145,15 @@
       <div class="row wide">
       <!-- LIGHTING -->
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
-         <button  class="btn  btn-block btn-square background" href="#lights" data-toggle="collapse">Lights <img class="nav-image" src="images/light.png"></button>
+         <button  class="btn  btn-block btn-square background" href="#lights" data-toggle="collapse">Lighting <img class="nav-image" src="images/light.png"></button>
          <div id="lights" class="collapse col-lg-12 col-md-12 col-sm-12 col-xs-12">
          	<input type="checkbox">Enable Manual Control of Lights<br>
             <div class="tab-label">Light Intesity</div>
-            <div class="circled-number">69</div>
+            <div class="circled-number"><span id="light-number">69</span></div>
             <div class="tab-label">Control Lights</div>
             <div class="button-div"><input type="checkbox" id="light_slider" onchange="light_toggle()" checked data-toggle="toggle" data-width="150"></div>
+            <div class="tab-label">Blinds</div>
+            <div class="button-div"><input type="checkbox" id="blind_slider" onchange="blind_toggle()" checked data-toggle="toggle"  data-width="150" data-on="Open" data-off="Closed"></div>
          </div>
       </div>
       <!-- HVAC -->
@@ -122,8 +180,14 @@
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
          <button class="btn  btn-block btn-square background" href="#security" data-toggle="collapse">Security <img class="nav-image" src="images/security.png"></button>
          <div id="security" class="collapse">
+
+        <video autoplay="true" id="videoElement">
+ 			
+		</video>
+
+
          	<div class="tab-label" style="font-size: 18px;">Last Motion Detected: </div> 
-            <div class="button-div"><input type="checkbox" checked data-toggle="toggle" data-width="150" data-on="Armed" data-off="Disarmed"></div>
+            <div class="button-div"><input type="checkbox" id="security_slider" onchange="security_toggle()" checked data-toggle="toggle" data-width="150" data-on="Armed" data-off="Disarmed"></div>
          </div>
      </div>
 
@@ -132,7 +196,15 @@
             <button class="btn  btn-block btn-square background" href="#other" data-toggle="collapse">Other</button>
             <div id="other" class="collapse">
                <div class="tab-label">Other</div>
-               <div class="button-div"></div>
+               <ul>
+               		<li>Today's Solar Radiation</li>
+               		<li>Today's UV Radiation</li>
+               </ul>
+               <table>
+               	<tr><th>Category</th><th>Value</th></th></tr>
+               	<tr><td>Light (hrs)</td><td></td></tr>
+
+               </table>
             </div>
          </div>
       </div>
