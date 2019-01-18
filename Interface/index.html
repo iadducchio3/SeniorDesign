@@ -23,26 +23,63 @@
          var host="192.168.200.186"; //change this
          var port=1884;
          
+        function pub(value,topic){
+         	message = new Paho.MQTT.Message(value);
+         	message.destinationName = topic;
+         	mqtt.send(message);
+         }
+
          function onConnect() {
          // Once a connection has been made, make a subscription and send a message.
-         console.log("Connected ");
-         //mqtt.subscribe("sensor1");
-         message = new Paho.MQTT.Message("test");
-         message.destinationName = "light_intensity";
-         mqtt.send(message);
+         	console.log("Connected ");
+         	mqtt.subscribe('#');
+        
          }
          
          function MQTTconnect() {
-         console.log("connecting to "+ host +" "+ port);
-         mqtt = new Paho.MQTT.Client(host,port,"/sensors","clientjs");
-         //document.write("connecting to "+ host);
-         var options = {
-            timeout: 3,
-            onSuccess: onConnect,
-          };
-          
-         mqtt.connect(options); //connect
+         	console.log("connecting to "+ host +" "+ port);
+	        mqtt = new Paho.MQTT.Client(host,port,"/home","clientjs");
+
+	        var options = {
+	           timeout: 3,
+	           onSuccess: onConnect,
+	        };
+         	mqtt.connect(options);
          }
+            function plus() {
+         		var val = document.getElementById("set-temp-number").innerHTML; 
+            	var new_val = parseInt(document.getElementById("set-temp-number").innerHTML)+1;
+            	document.getElementById("set-temp-number").innerHTML = new_val; 
+            	pub(new_val.toString(),'temperature_set');
+         	}
+
+             function minus() {
+                  var val = document.getElementById("set-temp-number").innerHTML; 
+                  var new_val = parseInt(document.getElementById("set-temp-number").innerHTML)-1;
+                  document.getElementById("set-temp-number").innerHTML = new_val; 
+                  pub(new_val.toString(),'temperature_set');
+             }
+
+             function hvac_toggle() {
+             	var val = $('#hvac_slider').prop("checked");
+             	if(val){
+             		pub('on','temperature_power');
+             	}else{
+             		pub('off','temperature_power');
+             	}
+            
+    		}
+
+ 			function light_toggle() {
+             	var val = $('#light_slider').prop("checked");
+             	if(val){
+             		pub('on','light_power');
+             	}else{
+             		pub('off','light_power');
+             	}
+            
+    		}
+
          
       </script>
    </head>
@@ -58,7 +95,7 @@
             <div class="tab-label">Light Intesity</div>
             <div class="circled-number">69</div>
             <div class="tab-label">Control Lights</div>
-            <div class="button-div"><input type="checkbox" checked data-toggle="toggle" data-width="150"></div>
+            <div class="button-div"><input type="checkbox" id="light_slider" onchange="light_toggle()" checked data-toggle="toggle" data-width="150"></div>
          </div>
       </div>
       <!-- HVAC -->
@@ -70,15 +107,15 @@
          <div class="circled-number"><span id="temp-number">69</span></div>
          <div class="tab-label">Set Temperature</div>
          <div class="set-temp">
-            <a id="minus">
+            <a onclick="minus()">
             <span class="glyphicon glyphicon-minus"></span>
             </a>
             <span id="set-temp-number">68</span>
-            <a id="plus">
+            <a onclick="plus()">
             <span class="glyphicon glyphicon-plus"></span>
             </a>
          </div>
-         <div class="button-div"><input type="checkbox" checked data-toggle="toggle" data-width="150"></div>
+         <div class="button-div"><input type="checkbox" id="hvac_slider" onchange="hvac_toggle()" checked data-toggle="toggle" data-width="150"></div>
       </div>
   </div>
       <!-- SECURITY SYSTEM-->
@@ -115,17 +152,6 @@
                       }, 500);
                   }
               });
-         
-             $("#plus").click(function () {
-         
-                  var new_val = document.getElementById("set-temp-number").innerHTML; 
-                  document.getElementById("set-temp-number").innerHTML = parseInt(new_val)+1;
-         
-             });
-             $("#minus").click(function () {
-                  var new_val = document.getElementById("set-temp-number").innerHTML; 
-                  document.getElementById("set-temp-number").innerHTML = parseInt(new_val)-1;
-             });
            });            
       </script>
    </body>

@@ -46,7 +46,7 @@ void loop() {
 
   Serial.println("Publishing Light Intesity");
   light_intesity_feed.publish(light_intesity);  
-
+  delay(10000);
   //READ SUBSCRIPTION
   Adafruit_MQTT_Subscribe *subscription; 
   while ((subscription = mqtt.readSubscription(5000))) { 
