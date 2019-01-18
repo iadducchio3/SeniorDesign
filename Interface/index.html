@@ -38,6 +38,7 @@
          	mqtt.subscribe('home/security_power');
          	mqtt.subscribe('home/light_sensor');     
          	mqtt.subscribe('home/blind_status');  
+         	mqtt.subscribe('home/temperature_set');
          }
          
          function MQTTconnect() {
@@ -54,6 +55,7 @@
          function onMessageArrived(message) {
   			var new_message = message.payloadString;
   			var topic = message.destinationName;
+  			alert('msg arrived');
   			switch(topic) {
   				case 'home/light_power':
   					
@@ -65,16 +67,29 @@
   					var val = document.getElementById("temp-number").innerHTML = new_message;
   					break;
   				case 'home/temperature_power':
-  					
+  					if(new_message =='on'){
+  						//var val = $('#hvac_slider').prop('checked',true);
+             		}else{
+             			//var val = $('#hvac_slider').prop('checked',false);
+             			//alert('off');
+             		}
   					break;
   				case 'home/temperature_set':
-  					
+  					var val = document.getElementById("set-temp-number").innerHTML = new_message;
   					break;
   				case 'home/security_power':
-  					
+  					if(new_message =='on'){
+  						//var val = $('#security_slider')
+             		}else{
+             			
+             		}
   					break;
   				case 'home/blind_status':
-  					
+  					if(new_message =='on'){
+  						//var val = $('#hvac_slider')
+             		}else{
+             			
+             		}
   					break;
   				default:
   					alert('no hits');
