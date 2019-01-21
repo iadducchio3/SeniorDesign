@@ -68,10 +68,11 @@
   					break;
   				case 'home/temperature_power':
   					if(new_message =='on'){
-  						//var val = $('#hvac_slider').prop('checked',true);
+  						//var val = $('#hvac_slider').bootstrapToggle('on');
+  						$('#hvac_slider').removeClass('toggle-off');
              		}else{
-             			//var val = $('#hvac_slider').prop('checked',false);
-             			//alert('off');
+             			//var val = $('#hvac_slider').bootstrapToggle('off');
+             			$('#hvac_slider').removeClass('toggle-on');
              		}
   					break;
   				case 'home/temperature_set':
@@ -79,14 +80,14 @@
   					break;
   				case 'home/security_power':
   					if(new_message =='on'){
-  						//var val = $('#security_slider')
+  						var val = $('#security_slider')
              		}else{
              			
              		}
   					break;
   				case 'home/blind_status':
   					if(new_message =='on'){
-  						//var val = $('#hvac_slider')
+  						var val = $('#hvac_slider')
              		}else{
              			
              		}
@@ -114,14 +115,16 @@
              }
 
              function hvac_toggle() {
-             	var val = $('#hvac_slider').prop("checked");
-             	if(val){
-             		pub('on','home/temperature_power');
-             	}else{
-             		pub('off','home/temperature_power');
-             	}
+      			
+             		var val = $('#hvac_slider').prop("checked");
+             		if(val){
+             			pub('on','home/temperature_power');
+             		}else{
+             			pub('off','home/temperature_power');
+             		}
+            }
             
-    		}
+    		
 
  			function light_toggle() {
              	var val = $('#light_slider').prop("checked");
@@ -162,7 +165,6 @@
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
          <button  class="btn  btn-block btn-square background" href="#lights" data-toggle="collapse">Lighting <img class="nav-image" src="images/light.png"></button>
          <div id="lights" class="collapse col-lg-12 col-md-12 col-sm-12 col-xs-12">
-         	<input type="checkbox">Enable Manual Control of Lights<br>
             <div class="tab-label">Light Intesity</div>
             <div class="circled-number"><span id="light-number">69</span></div>
             <div class="tab-label">Control Lights</div>
@@ -175,7 +177,6 @@
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
       <button class="btn  btn-block btn-square background" href="#hvac" data-toggle="collapse">HVAC <img class="nav-image" src="images/fan.png"></button>
       <div id="hvac" class="collapse">
-      	<input type="checkbox">Enable Manual Control of Lights<br>
          <div class="tab-label">Temperature&#8457;</div>
          <div class="circled-number"><span id="temp-number">69</span></div>
          <div class="tab-label">Set Temperature</div>
@@ -188,7 +189,7 @@
             <span class="glyphicon glyphicon-plus"></span>
             </a>
          </div>
-         <div class="button-div"><input type="checkbox" id="hvac_slider" onchange="hvac_toggle()" checked data-toggle="toggle" data-width="150"></div>
+         <div class="button-div"><input type="checkbox" id="hvac_slider" onchange="hvac_toggle(1)" checked data-toggle="toggle" data-width="150"></div>
       </div>
   </div>
       <!-- SECURITY SYSTEM-->
