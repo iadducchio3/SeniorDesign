@@ -46,13 +46,22 @@
       	console.log("connecting to " + host + " " + port);
       	mqtt = new Paho.MQTT.Client(host, port, "/home", clientID);
       	mqtt.onMessageArrived = onMessageArrived;
+      	mqtt.onConnectionLost = onConnectionLost;
       	var options = {
       		timeout: 3,
       		onSuccess: onConnect,
+
       	};
       	mqtt.connect(options);
       }
 
+      function onConnectionLost(responseObject) {
+      	alert('connection lost');
+  		if (responseObject.errorCode !== 0) {
+   			console.log("onConnectionLost:"+responseObject.errorMessage);
+		}
+		MQTTconnect();
+	  }
       function onMessageArrived(message) {
       	var new_message = message.payloadString;
       	var topic = message.destinationName;
@@ -65,10 +74,10 @@
       			}
       			break;
       		case 'home/light_sensor':
-      			var val = document.getElementById("light-number").innerHTML = new_message;
+      			document.getElementById("light-number").innerHTML = new_message;
       			break;
       		case 'home/temperature_sensor':
-      			var val = document.getElementById("temp-number").innerHTML = new_message;
+      			document.getElementById("temp-number").innerHTML = new_message;
       			break;
       		case 'home/temperature_power':
       			if (new_message == 'on') {
@@ -78,7 +87,7 @@
       			}
       			break;
       		case 'home/temperature_set':
-      			var val = document.getElementById("set-temp-number").innerHTML = new_message;
+      			document.getElementById("set-temp-number").innerHTML = new_message;
       			break;
       		case 'home/security_power':
       			if (new_message == 'on') {
@@ -95,7 +104,7 @@
       			}
       			break;
       		default:
-      			alert('no hits');
+      			
       	}
       }
 
