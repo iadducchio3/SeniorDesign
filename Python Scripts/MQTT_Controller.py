@@ -3,42 +3,34 @@ import RPi.GPIO as GPIO
 import paho.mqtt.client as mqtt 
 import paho.mqtt.publish as publish
  
-# GLOBAL MOST RECENT PUBLISHED WITH INITIAL VALUES
-#light_status = ("status/light","OFF")
-#hvac = ("status/hvac","OFF")
-#temperature = ("sensor/temperature","50")
-#light_intesity = ("sensor/light_intesity","50")
-#blinds = ("status/blinds","0")
-# ADD OTHER STUFF HERE 
 
 
 # FUNCTION| RUNS WHEN CLIENT CONNECTS TO SERVER
 def on_connect(client, userdata, flags, rc): 
    print("Connected with result code " + str(rc)) 
-   #PUBLISH ALL RECENT FOR NEW CLIENT TO SEE
-   #client.publish(light_status)
-   #client.publish(hvac)
-   #client.publish(temperature)
-   #client.publish(light_intesity)
-   #client.publsih(blinds)
 
 # FUNCTION| RUNS WHEN MESSAGE IS RECEIVED
 def on_message(client, userdata, msg):
    #TEMPORARY TO SEE WHATS COMING INTO BROKER 
-	print(msg.topic+" "+str( msg.payload)) 
-   
+  new_message = msg.topic
   #CHECK THE TOPIC OF THE MESSAGE
-  if msg.topic == 'status/':
-	#NEED IDEA TO OVERRIDE SENSORS ON USER INPUT
-		print("User Input: " + msg.topic + str(msg.payload))
-  elif msg.topic == 'status/':
-  	#NEED IDEA TO OVERRIDE SENSORS ON USER INPUT
-  	print("User Input: " + msg.topic + str(msg.payload))
+  if new_message == 'home/temperature_power':
+    print('Temperature Status: '+msg.payload)
+  elif new_message == 'home/light_power':
+    print('Light Status: '+msg.payload)
+  elif new_message == 'home/security_power':
+    print('Security Status: '+msg.payload)
+  elif new_message == 'home/light_sensor':
+    print('Light Intensity: '+msg.payload)
+  elif new_message == 'home/temperature_set':
+    print('Temperature Setting: '+msg.payload)
+  elif new_message == 'home/blind_status':
+    print('Blind Status: '+msg.payload)
+  elif new_message == 'home/temperature_sensor':
+    print('Temperature: '+msg.payload)
 
-  elif msg.topic == 'sensor/':
-  	print(msg.topic)
-  elif msg.topic == 'sensor/':
-  	print(msg.topic)
+
+
 
 
 # CREATE "CLIENT" TO CONNECT TO LOCAL SERVER
@@ -54,7 +46,7 @@ client.loop_start()
 client.subscribe("#")
 
 while 1:
-	time.sleep(1000)
+  time.sleep(1000)
 
 
 
