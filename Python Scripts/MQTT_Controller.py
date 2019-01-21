@@ -4,11 +4,11 @@ import paho.mqtt.client as mqtt
 import paho.mqtt.publish as publish
  
 # GLOBAL MOST RECENT PUBLISHED WITH INITIAL VALUES
-light_status = ("status/light","OFF")
-hvac = ("status/hvac","OFF")
-temperature = ("sensor/temperature","50")
-light_intesity = ("sensor/light_intesity","50")
-blinds = ("status/blinds","0")
+#light_status = ("status/light","OFF")
+#hvac = ("status/hvac","OFF")
+#temperature = ("sensor/temperature","50")
+#light_intesity = ("sensor/light_intesity","50")
+#blinds = ("status/blinds","0")
 # ADD OTHER STUFF HERE 
 
 
@@ -16,11 +16,11 @@ blinds = ("status/blinds","0")
 def on_connect(client, userdata, flags, rc): 
    print("Connected with result code " + str(rc)) 
    #PUBLISH ALL RECENT FOR NEW CLIENT TO SEE
-   client.publish(light_status)
-   client.publish(hvac)
-   client.publish(temperature)
-   client.publish(light_intesity)
-   client.publsih(blinds)
+   #client.publish(light_status)
+   #client.publish(hvac)
+   #client.publish(temperature)
+   #client.publish(light_intesity)
+   #client.publsih(blinds)
 
 # FUNCTION| RUNS WHEN MESSAGE IS RECEIVED
 def on_message(client, userdata, msg):
@@ -46,8 +46,6 @@ client = mqtt.Client()
 client.on_connect = on_connect 
 client.on_message = on_message 
 client.connect('localhost', 1883, 60) 
-
-
 
 #CREATE THREAD TO PROCESS MESSAGE QUEUE 
 client.loop_start() 
