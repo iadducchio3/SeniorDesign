@@ -2,7 +2,8 @@ import time
 import RPi.GPIO as GPIO 
 import paho.mqtt.client as mqtt 
 import paho.mqtt.publish as publish
- 
+import datetime
+
 temperature = 70
 light_intensity = 50
 temperature_set = 70
@@ -73,6 +74,12 @@ def on_message(client, userdata, msg):
   elif new_message == 'home/temperature_sensor':
     print('Temperature: '+msg.payload)
     newTemp(value)
+   elif new_message == 'home/motion':
+   	dt = datetime.datetime.now()
+   	time = dt.strftime("%d %b %Y")+" | "+ dt.strftime("%I:%M %p")
+   	print('Motion Detected: '+ time)
+   	#need to publish the time to home/last_motion_detected 
+   	#also to prevent infinite recursion change subscription to ommit this topic
 
 
 
