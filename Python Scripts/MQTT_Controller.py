@@ -3,6 +3,7 @@ import RPi.GPIO as GPIO
 import paho.mqtt.client as mqtt 
 import paho.mqtt.publish as publish
 import datetime
+import SMS.py
 
 temperature = 70
 light_intensity = 50
@@ -45,9 +46,6 @@ def newSecurityPower(value):
   security_power = value
 
 
-
-
-
 # FUNCTION| RUNS WHEN MESSAGE IS RECEIVED
 def on_message(client, userdata, msg):
    #TEMPORARY TO SEE WHATS COMING INTO BROKER 
@@ -75,14 +73,14 @@ def on_message(client, userdata, msg):
   elif new_message == 'home/temperature_sensor':
     print('Temperature: '+msg.payload)
     newTemp(value)
-   elif new_message == 'home/motion':
+  elif new_message == 'home/motion':
    	dt = datetime.datetime.now()
    	time = dt.strftime("%d %b %Y")+" | "+ dt.strftime("%I:%M %p")
    	print('Motion Detected: '+ time)
-   		client.publish("home/last_motion_detected",payload=time,hostname="localhost")
-   	#need to publish the time to home/last_motion_detected 
-   	#also to prevent infinite recursion change subscription to ommit this topic
-
+   	client.publish("home/last_motion_detected",time)
+   	if security_power == 'on':
+   		send_message("Motion Detected")
+ 
 
 
 
