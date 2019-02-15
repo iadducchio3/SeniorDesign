@@ -3,7 +3,7 @@ import RPi.GPIO as GPIO
 import paho.mqtt.client as mqtt 
 import paho.mqtt.publish as publish
 import datetime
-import SMS.py
+import SMS
 
 temperature = 70
 light_intensity = 50
@@ -78,9 +78,11 @@ def on_message(client, userdata, msg):
    	time = dt.strftime("%d %b %Y")+" | "+ dt.strftime("%I:%M %p")
    	print('Motion Detected: '+ time)
    	client.publish("home/last_motion_detected",time)
+   	print("printing security power line 81")
+   	print(security_power)
    	if security_power == 'on':
    		print("sending text message")
-   		send_message("Motion detected at"+ time)
+   		send_message("Motion detected at")
  
 
 
