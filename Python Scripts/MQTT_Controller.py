@@ -43,6 +43,7 @@ def newLightIntensity(value):
   light_intensity = value
 
 def newSecurityPower(value):
+  global security_power
   security_power = value
 
 
