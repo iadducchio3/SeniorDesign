@@ -79,7 +79,8 @@ def on_message(client, userdata, msg):
    	print('Motion Detected: '+ time)
    	client.publish("home/last_motion_detected",time)
    	if security_power == 'on':
-   		send_message("Motion Detected")
+   		print("sending text message")
+   		send_message("Motion detected at"+ time)
  
 
 
