@@ -17,6 +17,7 @@ lights = 'off'
 def on_connect(client, userdata, flags, rc): 
   print("Connected with result code " + str(rc)) 
 
+
 def newTemp(value):
   temperature = value
 
@@ -78,6 +79,7 @@ def on_message(client, userdata, msg):
    	dt = datetime.datetime.now()
    	time = dt.strftime("%d %b %Y")+" | "+ dt.strftime("%I:%M %p")
    	print('Motion Detected: '+ time)
+   		client.publish("home/last_motion_detected",payload=time,hostname="localhost")
    	#need to publish the time to home/last_motion_detected 
    	#also to prevent infinite recursion change subscription to ommit this topic
 
