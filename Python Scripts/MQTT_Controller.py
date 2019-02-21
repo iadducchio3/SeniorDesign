@@ -85,6 +85,10 @@ def on_message(client, userdata, msg):
     elif new_message == 'home/home_motion':
     	print("home motion detected")
         last_home_motion = datetime.datetime.now()
+        print("Motion Sensor Activated At")
+        print(last_home_motion)
+        print("Need to Turn off Lights At")
+
     else:
     	print(new_message,msg.payload)
 
