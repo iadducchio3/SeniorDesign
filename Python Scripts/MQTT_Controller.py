@@ -117,7 +117,7 @@ client.subscribe('home/security_motion')
 client.subscribe('home/home_motion')
 
 
-newThread = threading.Thread(target=automaticLights, args=())
+newThread = Thread(target=automaticLights, args=())
 newThread.daemon = True
 newThread.start()
 
