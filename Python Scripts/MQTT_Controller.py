@@ -42,7 +42,7 @@ def automaticLights():
             last_light_status = 'on'
             time.sleep(difference)
         else:
-            if last_light_status == 'on'
+            if last_light_status == 'on':
                 client.publish('home/light_power', 'off')
                 last_light_status = 'off'
 
