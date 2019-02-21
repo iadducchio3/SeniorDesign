@@ -8,7 +8,7 @@ from threading import Thread
 from datetime import timedelta
 
 hvac_power = 'off'
-last_temp = 0
+last_temp = 69
 last_temp_set = 0
 last_home_motion = datetime.datetime.now()
 last_light_status = ''
