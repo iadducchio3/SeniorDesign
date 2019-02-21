@@ -11,6 +11,7 @@ hvac_power = 'off'
 last_temp = 0
 last_temp_set = 0
 last_home_motion = datetime.datetime.now()
+last_light_status = ''
 
 
 # FUNCTION| RUNS WHEN CLIENT CONNECTS TO SERVER
@@ -32,17 +33,18 @@ def controlHVAC():
 
 def automaticLights():
     print("Thread Started")
-    global client
+    global client, last_light_status
     while 1:
         if last_home_motion + timedelta(seconds=20) > datetime.datetime.now():
             difference = (last_home_motion + timedelta(seconds=20) - datetime.datetime.now()).total_seconds()
             print(difference)
             client.publish('home/light_power', 'on')
+            last_light_status = 'on'
             time.sleep(difference)
         else:
-            client.publish('home/light_power', 'off')
-    print('exiting automatic lights')
-
+            if last_light_status != 'on'
+                client.publish('home/light_power', 'off')
+                last_light_status = 'off'
 
 # FUNCTION| RUNS WHEN MESSAGE IS RECEIVED
 
