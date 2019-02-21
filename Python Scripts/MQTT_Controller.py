@@ -94,6 +94,8 @@ def on_message(client, userdata, msg):
         print(last_home_motion + timedelta(seconds=20))
     elif new_message == 'home/fan_power':
     	print(new_message,msg.payload)
+    elif new_message == 'home/light_power':
+    	print(new_message,msg.payload)
 
 # CREATE "CLIENT" TO CONNECT TO LOCAL SERVER
 client = mqtt.Client() 
