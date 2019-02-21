@@ -4,8 +4,8 @@ import paho.mqtt.client as mqtt
 import paho.mqtt.publish as publish
 import datetime
 import SMS
-#from threading import Thread
-#from datetime import timedelta
+from threading import Thread
+from datetime import timedelta
 
 hvac_power = 'off'
 last_temp = 0
@@ -19,7 +19,7 @@ def on_connect(client, userdata, flags, rc,):
     print 'Connected with result code ' + str(rc)
 
 
-'''def controlHVAC():
+def controlHVAC():
     global hvac_power, last_temp, last_temp_set
     if hvac_power == 'on':
         if last_temp_set < last_temp:
@@ -27,10 +27,10 @@ def on_connect(client, userdata, flags, rc,):
         elif last_temp_set > last_temp:
             client.publish('home/fan_power', 'off')
     elif hvac_power == 'off':
-        client.publish('home/fan_power', 'off')'''
+        client.publish('home/fan_power', 'off')
 
 
-'''def automaticLights():
+def automaticLights():
     print("Thread Started")
     global client
     while 1:
@@ -41,7 +41,7 @@ def on_connect(client, userdata, flags, rc,):
             time.sleep(difference)
         else:
             client.publish('home/light_power', 'off')
-    print('exiting automatic lights')'''
+    print('exiting automatic lights')
 
 
 # FUNCTION| RUNS WHEN MESSAGE IS RECEIVED
@@ -92,9 +92,9 @@ client.on_connect = on_connect
 client.on_message = on_message 
 client.connect('localhost', 1883, 60) 
 
-'''newThread = Thread(target=automaticLights, args=())
+newThread = Thread(target=automaticLights, args=())
 newThread.daemon = True
-newThread.start()'''
+newThread.start()
 
 # CREATE THREAD TO PROCESS MESSAGE QUEUE
 client.loop_start()
