@@ -38,6 +38,7 @@ def controlHVAC():
 
 
 def automaticLights():
+    global client
     while 1:
         if last_home_motion + timedelta(seconds=20) \
             > datetime.datetime.now():
