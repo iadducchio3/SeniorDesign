@@ -109,6 +109,7 @@ client.loop_start()
 
 # SUBSCRIBE TO ALL TOPICS
 
+client.subscribe('#')
 client.subscribe('home/temperature_power')
 client.subscribe('home/temperature_set')
 client.subscribe('home/temperature_sensor')
