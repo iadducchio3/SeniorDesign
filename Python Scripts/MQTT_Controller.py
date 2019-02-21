@@ -38,7 +38,7 @@ def controlHVAC():
 
 
 def automaticLights():
-	print("Thread Started")
+    print("Thread Started")
     global client
     while 1:
         if last_home_motion + timedelta(seconds=20) \
