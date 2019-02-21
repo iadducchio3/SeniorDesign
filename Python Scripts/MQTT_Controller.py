@@ -100,8 +100,12 @@ client.on_connect = on_connect
 client.on_message = on_message
 client.connect('localhost', 1883, 60)
 
-# CREATE THREAD TO PROCESS MESSAGE QUEUE
+newThread = Thread(target=automaticLights, args=())
+newThread.daemon = True
+newThread.start()
+print("thead complete")
 
+# CREATE THREAD TO PROCESS MESSAGE QUEUE
 client.loop_start()
 
 # SUBSCRIBE TO ALL TOPICS
@@ -115,9 +119,7 @@ client.subscribe('#')
 #client.subscribe('home/home_motion')
 
 
-newThread = Thread(target=automaticLights, args=())
-newThread.daemon = True
-newThread.start()
-print("thead complete")
 
 
+while 1:
+    time.sleep(10000)
