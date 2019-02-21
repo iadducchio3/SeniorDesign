@@ -26,9 +26,10 @@ def controlHVAC():
     print(hvac_power)
     print(last_temp)
     print(last_temp_set)
-    print('\n')
+    
     if hvac_power == 'on':
         if last_temp_set < last_temp:
+        	print("turning on fan")
             client.publish('home/fan_power', 'on')
         elif last_temp_set > last_temp:
             client.publish('home/fan_power', 'off')
@@ -67,12 +68,12 @@ def on_message(client, userdata, msg):
     
     elif new_message == 'home/temperature_set':
         #print 'Temperature Setting: ' + msg.payload
-        last_temp_set = msg.payload
+        last_temp_set = (int)msg.payload
         controlHVAC()
     
     elif new_message == 'home/temperature_sensor':
         #print 'Temperature: ' + msg.payload
-        last_temp = msg.payload
+        last_temp = (int)msg.payload
         controlHVAC()
     
     elif new_message == 'home/light_sensor':
