@@ -47,8 +47,9 @@ def on_connect(client, userdata, flags, rc,):
 # FUNCTION| RUNS WHEN MESSAGE IS RECEIVED
 
 def on_message(client, userdata, msg):
-    print('message received')
+    
     message_payload = msg.payload
+    new_message = msg.topic
     if new_message == 'home/temperature_power':
         print 'Temperature Status: ' + msg.payload
         if msg.payload == 'on':
