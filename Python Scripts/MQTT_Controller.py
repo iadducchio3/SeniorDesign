@@ -58,14 +58,17 @@ def on_message(client, userdata, msg):
         else:
             hvac_power = 'off'
         controlHVAC()
+    
     elif new_message == 'home/temperature_set':
-
         print 'Temperature Setting: ' + msg.payload
-        newTempSet(message_payload)
+        last_temp_set = msg.payload
+        controlHVAC()
+    
     elif new_message == 'home/temperature_sensor':
-
         print 'Temperature: ' + msg.payload
-        newTemp(value)
+        last_temp = msg.payload
+        controlHVAC()
+    
     elif new_message == 'home/light_sensor':
 
         print 'Light Intensity: ' + msg.payload
@@ -83,7 +86,6 @@ def on_message(client, userdata, msg):
             SMS.send_message('Motion detected at')
             client.publish('home/security_light', 'on')
     elif new_message == 'home/home_motion':
-    	print("home motion detected")
         last_home_motion = datetime.datetime.now()
         print("Motion Sensor Activated At")
         print(last_home_motion)
