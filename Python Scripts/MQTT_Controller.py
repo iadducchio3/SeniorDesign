@@ -90,7 +90,8 @@ def on_message(client, userdata, msg):
 
         last_home_motion = datetime.datetime.now()
 
-
+    else:
+        print(msg.payload)
 
 
 
