@@ -7,6 +7,7 @@ import paho.mqtt.publish as publish
 import datetime
 import SMS
 from threading import Thread
+from datetime import timedelta
 
 hvac_power = 'off'
 last_temp = 0
