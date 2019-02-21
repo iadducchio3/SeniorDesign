@@ -21,15 +21,9 @@ def on_connect(client, userdata, flags, rc,):
 
 
 def controlHVAC():
-    global hvac_power, last_temp, last_temp_set
-    print('\n')
-    print(hvac_power)
-    print(last_temp)
-    print(last_temp_set)
-    
+    global hvac_power, last_temp, last_temp_set    
     if hvac_power == 'on':
         if last_temp_set < last_temp:
-            print("turning on fan")
             client.publish('home/fan_power', 'on')
         elif last_temp_set > last_temp:
             client.publish('home/fan_power', 'off')
@@ -39,11 +33,11 @@ def controlHVAC():
 
 def automaticLights():
     print("Thread Started")
-    global client, last_light_status
+    global last_light_status
     while 1:
         if last_home_motion + timedelta(seconds=20) > datetime.datetime.now():
             difference = (last_home_motion + timedelta(seconds=20) - datetime.datetime.now()).total_seconds()
-            print(difference)
+            print("Going to Sleep for", difference," seconds")
             client.publish('home/light_power', 'on')
             last_light_status = 'on'
             time.sleep(difference)
