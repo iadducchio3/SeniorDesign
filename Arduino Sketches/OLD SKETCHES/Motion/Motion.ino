@@ -17,55 +17,44 @@
 #define MQTT_PORT 1883
 #define MQTT_USERNAME ""
 #define MQTT_PASSWORD ""
-#define LED D0
+#define sensor 13
 
 /**** CREATE MQTT CLIENT ****/
 WiFiClient client; 
 Adafruit_MQTT_Client mqtt(&client, MQTT_SERVER, MQTT_PORT, MQTT_USERNAME, MQTT_PASSWORD); 
 
 /**** DECLARE MQTT FEEDS ****/
-//PUBLSH 
-Adafruit_MQTT_Publish light_intensity_feed = Adafruit_MQTT_Publish(&mqtt, MQTT_USERNAME "home/light_sensor"); 
-//SUBSCRIBE
-Adafruit_MQTT_Subscribe light_power = Adafruit_MQTT_Subscribe(&mqtt, MQTT_USERNAME "home/light_power"); 
+
+Adafruit_MQTT_Publish motion = Adafruit_MQTT_Publish(&mqtt, MQTT_USERNAME "home/motion"); 
 
 /*************************************************************************************************/
 void setup() {
     Serial.begin(9600);
     connectWiFi();
     //SUBSCRIBE TO FEED
-    mqtt.subscribe(&light_power); 
-    pinMode(LED, OUTPUT);
-
-    
+     pinMode(sensor, INPUT);   // declare sensor as input
 }
 /*************************************************************************************************/
 void loop() {
   //CONNECT TO MQTT
   mqttConnect();
+
+
+  long state = digitalRead(sensor);
+  if(state == HIGH) {
+    //digitalWrite (sensor, HIGH);
+    Serial.println("Motion detected!");
+    motion.publish("x");
+        
+  }
+  else{
   
-  //GET LIGHT INTESITY
-  int light_intensity = (int)analogRead(A0)/5.35; //PLACEHOLDER
-  //IF THRESHOLD BROKEN, PUBLISH VALUE TO MQTT SERVER
-  if(light_intensity > 50 || light_intensity <10){
-    light_intensity_feed.publish(light_intensity);  
   }
-  //READ SUBSCRIPTION
-  Adafruit_MQTT_Subscribe *subscription; 
-  while ((subscription = mqtt.readSubscription(10000))) { 
-    if (subscription == &light_power) { 
-      char *message = (char *)light_power.lastread; 
-      if((String)message == "on"){
-        digitalWrite(LED,HIGH);
-      }
-      else if((String)message == "off"){
-        digitalWrite(LED,LOW);
-      }
-    }
-  }
-  float val = analogRead(A0);
-  Serial.println(val/5.35);
+  delay(1000);
 }
+
+
+  
 /*************************************************************************************************/
 
 //FUNCTION|CONNECT TO MQTT SERVER IF NOT CONNECTED
@@ -102,4 +91,3 @@ void connectWiFi(){
         Serial.println("Connection Failed");
     }
 }
-/*************************************************************************************************/

@@ -40,6 +40,8 @@
       	mqtt.subscribe('home/light_sensor');
       	mqtt.subscribe('home/blind_status');
       	mqtt.subscribe('home/temperature_set');
+      	mqtt.subscribe('home/last_motion_detected');
+      	mqtt.subscribe('home/temperature_sensor');
       }
 
       function MQTTconnect() {
@@ -63,6 +65,7 @@
 		MQTTconnect();
 	  }
       function onMessageArrived(message) {
+      	
       	var new_message = message.payloadString;
       	var topic = message.destinationName;
       	switch (topic) {
@@ -102,6 +105,10 @@
       				$('#blind_slider').prop('checked', true).change();
       				flag = true;
       			}
+      			break;
+
+      		case 'home/last_motion_detected':
+      			document.getElementById('last_motion').innerHTML =new_message;
       			break;
       		default:
       			
@@ -206,9 +213,8 @@
          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <button class="btn  btn-block btn-square background" href="#security" data-toggle="collapse">Security <img class="nav-image" src="images/security.png"></button>
             <div id="security" class="collapse">
-               <video autoplay="true" id="videoElement">
-               </video>
-               <div class="tab-label" style="font-size: 18px;">Last Motion Detected: </div>
+               
+               <div class="tab-label" style="font-size: 18px;">Last Motion Detected<br> <span id="last_motion"></span> </div>
                <div class="button-div"><input type="checkbox" id="security_slider" onchange="security_toggle()"  data-toggle="toggle" data-width="150" data-on="Armed" data-off="Disarmed"></div>
             </div>
          </div>
