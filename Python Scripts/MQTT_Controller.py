@@ -23,9 +23,9 @@ def on_connect(client, userdata, flags, rc,):
 def controlHVAC():
     global hvac_power, last_temp, last_temp_set
     print('\n')
-    print("hvac_power: " + hvac_power)
-    print("last_temp: "+ last_temp)
-    print("last_temp_set" + last_temp_set)
+    print(hvac_power)
+    print(last_temp)
+    print(last_temp_set)
     print('\n')
     if hvac_power == 'on':
         if last_temp_set < last_temp:
