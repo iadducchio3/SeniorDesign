@@ -83,7 +83,8 @@ def on_message(client, userdata, msg):
     elif new_message == 'home/home_motion':
 
         last_home_motion = datetime.datetime.now()
-
+    else:
+    	print(new_message,msg.payload)
 
 # CREATE "CLIENT" TO CONNECT TO LOCAL SERVER
 client = mqtt.Client() 
