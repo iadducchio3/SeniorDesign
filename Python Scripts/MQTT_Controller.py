@@ -120,6 +120,7 @@ client.subscribe('home/home_motion')
 newThread = Thread(target=automaticLights, args=())
 newThread.daemon = True
 newThread.start()
+print("thead complete")
 
 while 1:
     time.sleep(1000)
