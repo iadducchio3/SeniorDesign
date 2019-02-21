@@ -47,7 +47,6 @@ def on_connect(client, userdata, flags, rc,):
 # FUNCTION| RUNS WHEN MESSAGE IS RECEIVED
 
 def on_message(client, userdata, msg):
-    
     message_payload = msg.payload
     new_message = msg.topic
     if new_message == 'home/temperature_power':
@@ -84,10 +83,6 @@ def on_message(client, userdata, msg):
     elif new_message == 'home/home_motion':
 
         last_home_motion = datetime.datetime.now()
-
-    else:
-        print(msg.payload)
-
 
 
 # CREATE "CLIENT" TO CONNECT TO LOCAL SERVER
