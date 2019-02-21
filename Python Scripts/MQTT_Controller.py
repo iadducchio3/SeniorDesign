@@ -40,7 +40,7 @@ def automaticLights():
             print("Going to Sleep for", difference," seconds")
             client.publish('home/light_power', 'on')
             last_light_status = 'on'
-            time.sleep(difference)
+            time.sleep(difference+1)
         else:
             if last_light_status == 'on':
                 client.publish('home/light_power', 'off')
