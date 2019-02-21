@@ -29,7 +29,7 @@ def controlHVAC():
     
     if hvac_power == 'on':
         if last_temp_set < last_temp:
-        	print("turning on fan")
+            print("turning on fan")
             client.publish('home/fan_power', 'on')
         elif last_temp_set > last_temp:
             client.publish('home/fan_power', 'off')
