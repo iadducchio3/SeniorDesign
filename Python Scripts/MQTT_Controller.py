@@ -97,7 +97,7 @@ def on_message(client, userdata, msg):
         print(last_home_motion)
         print("Need to Turn off Lights At")
         print(last_home_motion + timedelta(seconds=20))
-    elif new_message == 'home/fan_power'
+    elif new_message == 'home/fan_power':
     	print(new_message,msg.payload)
 
 # CREATE "CLIENT" TO CONNECT TO LOCAL SERVER
