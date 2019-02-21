@@ -88,7 +88,7 @@ def on_message(client, userdata, msg):
         print("Motion Sensor Activated At")
         print(last_home_motion)
         print("Need to Turn off Lights At")
-
+        print(last_home_motion + timedelta(seconds=20))
     else:
     	print(new_message,msg.payload)
 
