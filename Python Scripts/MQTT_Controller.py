@@ -49,10 +49,11 @@ def automaticLights():
 # FUNCTION| RUNS WHEN MESSAGE IS RECEIVED
 
 def on_message(client, userdata, msg):
+    global hvac_power, last_temp, last_temp_set,security_power,last_home_motion
     message_payload = msg.payload
     new_message = msg.topic
     if new_message == 'home/temperature_power':
-        print 'Temperature Status: ' + msg.payload
+        #print 'Temperature Status: ' + msg.payload
         if msg.payload == 'on':
             hvac_power = 'on'
         else:
@@ -60,18 +61,18 @@ def on_message(client, userdata, msg):
         controlHVAC()
     
     elif new_message == 'home/temperature_set':
-        print 'Temperature Setting: ' + msg.payload
+        #print 'Temperature Setting: ' + msg.payload
         last_temp_set = msg.payload
         controlHVAC()
     
     elif new_message == 'home/temperature_sensor':
-        print 'Temperature: ' + msg.payload
+        #print 'Temperature: ' + msg.payload
         last_temp = msg.payload
         controlHVAC()
     
     elif new_message == 'home/light_sensor':
 
-        print 'Light Intensity: ' + msg.payload
+        #print 'Light Intensity: ' + msg.payload
         if msg.payload > 50:
             client.publish('home/blind_status', 'open')
         else:
@@ -80,7 +81,7 @@ def on_message(client, userdata, msg):
 
         dt = datetime.datetime.now()
         time = dt.strftime('%d %b %Y') + ' | ' + dt.strftime('%I:%M %p')
-        print 'Motion Detected: ' + time
+        #print 'Motion Detected: ' + time
         client.publish('home/last_motion_detected', time)
         if security_power == 'on':
             SMS.send_message('Motion detected at')
