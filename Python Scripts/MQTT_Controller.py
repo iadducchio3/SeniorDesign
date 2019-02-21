@@ -68,12 +68,12 @@ def on_message(client, userdata, msg):
     
     elif new_message == 'home/temperature_set':
         #print 'Temperature Setting: ' + msg.payload
-        last_temp_set = (int)msg.payload
+        last_temp_set = int(msg.payload)
         controlHVAC()
     
     elif new_message == 'home/temperature_sensor':
         #print 'Temperature: ' + msg.payload
-        last_temp = (int)msg.payload
+        last_temp = int(msg.payload)
         controlHVAC()
     
     elif new_message == 'home/light_sensor':
