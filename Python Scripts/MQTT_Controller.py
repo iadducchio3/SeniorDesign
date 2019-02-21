@@ -41,8 +41,7 @@ def automaticLights():
     print("Thread Started")
     global client
     while 1:
-        if last_home_motion + timedelta(seconds=20) \
-            > datetime.datetime.now():
+        if last_home_motion + timedelta(seconds=20) > datetime.datetime.now():
             difference = (last_home_motion + timedelta(seconds=20)
                           - datetime.datetime.now()).total_seconds()
             print(difference)
@@ -50,12 +49,12 @@ def automaticLights():
             time.sleep(difference)
         else:
             client.publish('home/light_power', 'off')
+    print('exiting automatic lights')
 
 
 # FUNCTION| RUNS WHEN MESSAGE IS RECEIVED
 
 def on_message(client, userdata, msg):
-
     message_payload = msg.payload
     if new_message == 'home/temperature_power':
         print 'Temperature Status: ' + msg.payload
@@ -97,7 +96,6 @@ def on_message(client, userdata, msg):
 
 
 # CREATE "CLIENT" TO CONNECT TO LOCAL SERVER
-
 client = mqtt.Client()
 client.on_connect = on_connect
 client.on_message = on_message
@@ -110,12 +108,12 @@ client.loop_start()
 # SUBSCRIBE TO ALL TOPICS
 
 client.subscribe('#')
-client.subscribe('home/temperature_power')
-client.subscribe('home/temperature_set')
-client.subscribe('home/temperature_sensor')
-client.subscribe('home/light_sensor')
-client.subscribe('home/security_motion')
-client.subscribe('home/home_motion')
+#client.subscribe('home/temperature_power')
+#client.subscribe('home/temperature_set')
+#client.subscribe('home/temperature_sensor')
+#client.subscribe('home/light_sensor')
+#client.subscribe('home/security_motion')
+#client.subscribe('home/home_motion')
 
 
 newThread = Thread(target=automaticLights, args=())
