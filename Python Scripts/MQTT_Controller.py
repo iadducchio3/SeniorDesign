@@ -22,6 +22,11 @@ def on_connect(client, userdata, flags, rc,):
 
 def controlHVAC():
     global hvac_power, last_temp, last_temp_set
+    print('\n')
+    print("hvac_power: " + hvac_power)
+    print("last_temp: "+ last_temp)
+    print("last_temp_set" + last_temp_set)
+    print('\n')
     if hvac_power == 'on':
         if last_temp_set < last_temp:
             client.publish('home/fan_power', 'on')
@@ -92,7 +97,7 @@ def on_message(client, userdata, msg):
         print(last_home_motion)
         print("Need to Turn off Lights At")
         print(last_home_motion + timedelta(seconds=20))
-    else:
+    elif new_message == 'home/fan_power'
     	print(new_message,msg.payload)
 
 # CREATE "CLIENT" TO CONNECT TO LOCAL SERVER
