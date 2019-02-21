@@ -117,7 +117,7 @@ client.subscribe('home/security_motion')
 client.subscribe('home/home_motion')
 
 
-thread = Thread(target=automaticLights)
+thread = Thread(target=automaticLights,args())
 thread.start()
 
 while 1:
