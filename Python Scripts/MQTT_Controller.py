@@ -83,7 +83,7 @@ def on_message(client, userdata, msg):
             SMS.send_message('Motion detected at')
             client.publish('home/security_light', 'on')
     elif new_message == 'home/home_motion':
-
+    	print("home motion detected")
         last_home_motion = datetime.datetime.now()
     else:
     	print(new_message,msg.payload)
