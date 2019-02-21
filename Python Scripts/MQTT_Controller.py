@@ -38,7 +38,7 @@ def controlHVAC():
 
 def automaticLights():
     while 1:
-        if last_motion_detected + timedelta(seconds=20) \
+        if last_home_motion + timedelta(seconds=20) \
             > datetime.datetime.now():
             difference = (last_motion_detected + timedelta(seconds=20)
                           - datetime.datetime.now()).total_seconds()
