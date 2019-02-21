@@ -38,12 +38,14 @@ def controlHVAC():
 
 
 def automaticLights():
+	print("Thread Started")
     global client
     while 1:
         if last_home_motion + timedelta(seconds=20) \
             > datetime.datetime.now():
             difference = (last_home_motion + timedelta(seconds=20)
                           - datetime.datetime.now()).total_seconds()
+            print(difference)
             client.publish('home/light_power', 'on')
             time.sleep(difference)
         else:
