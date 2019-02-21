@@ -120,5 +120,4 @@ newThread.daemon = True
 newThread.start()
 print("thead complete")
 
-while 1:
-    time.sleep(1000)
+
