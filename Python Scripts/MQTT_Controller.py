@@ -91,9 +91,8 @@ def on_message(client, userdata, msg):
         last_home_motion = datetime.datetime.now()
 
 
-if __name__ == '__main__':
-    thread = Thread(target=automaticLights)
-    thread.start()
+
+
 
 # CREATE "CLIENT" TO CONNECT TO LOCAL SERVER
 
@@ -114,6 +113,10 @@ client.subscribe('home/temperature_sensor')
 client.subscribe('home/light_sensor')
 client.subscribe('home/security_motion')
 client.subscribe('home/home_motion')
+
+
+thread = Thread(target=automaticLights)
+thread.start()
 
 while 1:
     time.sleep(1000)
