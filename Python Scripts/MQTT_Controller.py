@@ -73,12 +73,6 @@ def on_message(client, userdata, msg):
     elif new_message == 'home/light_intensity':
     	if int(msg.payload) > 80:
     		client.publish('home/blind_status','open')
-    		
-        #print 'Light Intensity: ' + msg.payload
-        if msg.payload > 50:
-            client.publish('home/blind_status', 'open')
-        else:
-            client.publish('home/blind_status', 'closed')
     elif new_message == 'home/security_motion':
 
         dt = datetime.datetime.now()
