@@ -89,13 +89,13 @@ def on_message(client, userdata, msg):
         print(last_home_motion)
         print("Need to Turn off Lights At")
         print(last_home_motion + timedelta(seconds=20))
-    elif new_message ==  'home/light_power':
+    '''elif new_message ==  'home/light_power':
     	if msg.payload == 'on':
     		print(new_message,msg.payload)
     		last_light_status = 'on'
     	else:
     		print(new_message,msg.payload)
-    		last_light_status = 'off'
+    		last_light_status = 'off' '''
     else:
     	print(new_message,msg.payload)
 
