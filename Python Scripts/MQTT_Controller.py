@@ -94,7 +94,8 @@ def on_message(client, userdata, msg):
     		last_light_status = 'on'
     	else:
     		last_light_status = 'off'
-
+    else:
+    	print(new_message,msg.payload)
 
 # CREATE "CLIENT" TO CONNECT TO LOCAL SERVER
 client = mqtt.Client() 
