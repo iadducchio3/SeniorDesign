@@ -31,17 +31,21 @@
       	mqtt.send(message);
       }
 
+      
+
       function onConnect() {
       	// Once a connection has been made, make a subscription and send a message.
       	console.log("Connected ");
       	mqtt.subscribe('home/light_power');
       	mqtt.subscribe('home/temperature_power');
       	mqtt.subscribe('home/security_power');
-      	mqtt.subscribe('home/light_sensor');
+      	mqtt.subscribe('home/light_intensity');
       	mqtt.subscribe('home/blind_status');
       	mqtt.subscribe('home/temperature_set');
       	mqtt.subscribe('home/last_motion_detected');
       	mqtt.subscribe('home/temperature_sensor');
+         mqtt.subscribe('home/security_triggered');
+         mqtt.subscribe('home/brightness');
       }
 
       function MQTTconnect() {
@@ -65,7 +69,6 @@
 		MQTTconnect();
 	  }
       function onMessageArrived(message) {
-      	
       	var new_message = message.payloadString;
       	var topic = message.destinationName;
       	switch (topic) {
@@ -75,8 +78,13 @@
       				$('#light_slider').prop('checked', true).change();
       				flag = true;
       			}
+               else{
+                  flag = false;
+                  $('#light_slider').prop('checked', false).change();
+                  flag = true;
+               }
       			break;
-      		case 'home/light_sensor':
+      		case 'home/light_intensity':
       			document.getElementById("light-number").innerHTML = new_message;
       			break;
       		case 'home/temperature_sensor':
@@ -105,13 +113,33 @@
       				$('#blind_slider').prop('checked', true).change();
       				flag = true;
       			}
+               else{
+                  flag = false;
+                  $('#blind_slider').prop('checked', false).change();
+                  flag = true;
+               }
       			break;
 
       		case 'home/last_motion_detected':
       			document.getElementById('last_motion').innerHTML =new_message;
       			break;
-      		default:
-      			
+            case 'home/security_triggered':
+               if(new_message == 'red'){
+                  $('.btn-square').css("background-color","#E75E41");
+                  $('.circled-number').css("background-color","#E75E41");
+               }
+               else{
+                  $('.btn-square').css("background-color","#979FAA");
+                  $('.circled-number').css("background-color","#979FAA");
+
+               }
+               break; 
+            case 'home/brightness':
+               flag = false;
+               slider = document.getElementById("myRange");
+               slider.value = new_message;
+               flag = true;
+            break;     			
       	}
       }
 
@@ -120,6 +148,7 @@
       	var new_val = parseInt(document.getElementById("set-temp-number").innerHTML) + 1;
       	document.getElementById("set-temp-number").innerHTML = new_val;
       	pub(new_val.toString(), 'home/temperature_set');
+
       }
 
       function minus() {
@@ -152,7 +181,8 @@
       }
 
       function security_toggle() {
-      	if (flag) {
+      	pub('123', 'home/home_motion');
+         if (flag) {
       		var val = $('#security_slider').prop("checked");
       		if (val) {
       			pub('on', 'home/security_power');
@@ -171,6 +201,13 @@
       			pub('closed', 'home/blind_status');
       		}
       	}
+      }
+
+      function brightness_slider() {
+         if (flag){
+            var slider = document.getElementById("myRange");
+             pub(slider.value.toString(),'home/brightness')
+         } 
       } 
   	</script>
    </head>
@@ -186,6 +223,9 @@
                <div class="circled-number"><span id="light-number">69</span></div>
                <div class="tab-label">Control Lights</div>
                <div class="button-div"><input type="checkbox" id="light_slider" onchange="light_toggle()"  data-toggle="toggle" data-width="150"></div>
+                <div class="tab-label">Adjust Brightness</div>
+                <div class="slidecontainer">
+               <input type="range" min="1" max="3" value="2" class="slider" oninput="brightness_slider()" id="myRange"></div>
                <div class="tab-label">Blinds</div>
                <div class="button-div"><input type="checkbox" id="blind_slider" onchange="blind_toggle()"  data-toggle="toggle"  data-width="150" data-on="Open" data-off="Closed"></div>
             </div>
@@ -257,7 +297,13 @@
                       }, 500);
                   }
               });
-           });            
+           });
+
+     /* var slider = document.getElementById("myRange");
+      slider.oninput = function(){
+         pub(slider.value.toString(),'home/brightness')
+
+      }*/            
       </script>
    </body>
 </html>
