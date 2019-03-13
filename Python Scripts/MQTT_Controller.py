@@ -32,12 +32,10 @@ def controlHVAC():
 
 
 def automaticLights():
-    print("Thread Started")
     global last_light_status
     while 1:
         if last_home_motion + timedelta(seconds=20) > datetime.datetime.now():
             difference = (last_home_motion + timedelta(seconds=20) - datetime.datetime.now()).total_seconds()
-            print("Going to Sleep for", difference," seconds")
             client.publish('home/light_power', 'on')
             last_light_status = 'on'
             time.sleep(difference+1)
@@ -45,6 +43,7 @@ def automaticLights():
             if last_light_status == 'on':
                 client.publish('home/light_power', 'off')
                 last_light_status = 'off'
+                time.sleep(2)
 
 # FUNCTION| RUNS WHEN MESSAGE IS RECEIVED
 
@@ -72,9 +71,11 @@ def on_message(client, userdata, msg):
     
     elif new_message == 'home/light_intensity':
     	if int(msg.payload) > 80:
-    		client.publish('home/blind_status','open')
-    elif new_message == 'home/security_motion':
+    		controlBlinds()
+    		last_light_status = 'off'
+    		client.publish('home/light_power','off')
 
+    elif new_message == 'home/security_motion':
         dt = datetime.datetime.now()
         time = dt.strftime('%d %b %Y') + ' | ' + dt.strftime('%I:%M %p')
         #print 'Motion Detected: ' + time
@@ -88,21 +89,25 @@ def on_message(client, userdata, msg):
         print(last_home_motion)
         print("Need to Turn off Lights At")
         print(last_home_motion + timedelta(seconds=20))
-    elif new_message == 'home/fan_power':
-    	print(new_message,msg.payload)
-    elif new_message == 'home/light_power':
-    	print(new_message,msg.payload)
-    else:
-    	print(new_message,msg.payload)
+    elif new_message ==  'home/light_power':
+    	if msg.payload == 'on':
+    		last_light_status = 'on'
+    	else:
+    		last_light_status = 'off'
+
+
 # CREATE "CLIENT" TO CONNECT TO LOCAL SERVER
 client = mqtt.Client() 
 client.on_connect = on_connect 
 client.on_message = on_message 
 client.connect('localhost', 1883, 60) 
 
+
+
 newThread = Thread(target=automaticLights, args=())
 newThread.daemon = True
 newThread.start()
+
 
 # CREATE THREAD TO PROCESS MESSAGE QUEUE
 client.loop_start()
