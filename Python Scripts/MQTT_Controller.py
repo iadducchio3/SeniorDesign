@@ -11,7 +11,7 @@ hvac_power = 'off'
 last_temp = 69
 last_temp_set = 0
 last_home_motion = datetime.datetime.now()
-last_light_status = ''
+last_light_status = 'off'
 
 
 # FUNCTION| RUNS WHEN CLIENT CONNECTS TO SERVER
