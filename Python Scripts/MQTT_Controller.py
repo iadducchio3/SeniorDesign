@@ -36,8 +36,10 @@ def automaticLights():
     while 1:
         if last_home_motion + timedelta(seconds=20) > datetime.datetime.now():
             difference = (last_home_motion + timedelta(seconds=20) - datetime.datetime.now()).total_seconds()
-            client.publish('home/light_power', 'on')
-            last_light_status = 'on'
+            if last_light_status == 'off':
+                client.publish('home/light_power', 'on')
+                last_light_status = 'on'
+            print('Going to Sleep for ',difference+1,' seconds')
             time.sleep(difference+1)
         else:
             if last_light_status == 'on':
@@ -85,10 +87,6 @@ def on_message(client, userdata, msg):
             client.publish('home/security_light', 'on')
     elif new_message == 'home/home_motion':
         last_home_motion = datetime.datetime.now()
-        print("Motion Sensor Activated At")
-        print(last_home_motion)
-        print("Need to Turn off Lights At")
-        print(last_home_motion + timedelta(seconds=20))
     else:
     	print(new_message,msg.payload)
 
