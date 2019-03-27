@@ -1,20 +1,11 @@
-int sensor = 13;  // Digital pin D7
-
+#define LED 13            // Led in NodeMCU at pin GPIO16 (D0).
 void setup() {
-
-  pinMode(sensor, INPUT);   // declare sensor as input
+pinMode(LED, OUTPUT);    // LED pin as output.
 }
-
 void loop() {
-Serial.begin(9600);
-  long state = digitalRead(sensor);
-    if(state == HIGH) {
-      digitalWrite (sensor, HIGH);
-      Serial.println("Motion detected!");
-    }else{
-      Serial.println("No Motion Detected");
-    }
-      delay(300);
-    
-   
+digitalWrite(LED, HIGH);// turn the LED off.(Note that LOW is the voltage level but actually 
+                        //the LED is on; this is because it is acive low on the ESP8266.
+delay(1000);            // wait for 1 second.
+digitalWrite(LED, LOW); // turn the LED on.
+delay(1000); // wait for 1 second.
 }

@@ -11,6 +11,7 @@
 #define MQTT_USERNAME ""
 #define MQTT_PASSWORD ""
 #define DHTPIN 13   
+#define LED 12
 #define DHTTYPE DHT11
 
 DHT dht(DHTPIN, DHTTYPE);
@@ -30,7 +31,7 @@ Adafruit_MQTT_Publish temp = Adafruit_MQTT_Publish(&mqtt, MQTT_USERNAME "home/te
 
 void setup() {
   Serial.begin(9600);
-
+  pinMode(LED, OUTPUT);
   dht.begin();
 
 }
@@ -46,6 +47,9 @@ void loop() {
   }
   temp.publish((int)f);
   Serial.println(f);
+  digitalWrite(LED,HIGH);
+  delay(1000);
+  digitalWrite(LED,LOW);
  
 }
 
