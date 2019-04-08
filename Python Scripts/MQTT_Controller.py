@@ -81,7 +81,7 @@ def on_message(client, userdata, msg):
         dt = datetime.datetime.now()
         time = dt.strftime('%d %b %Y') + ' | ' + dt.strftime('%I:%M %p')
         
-        text_message = 'Motion detected at: %s ' % time
+        text_message = 'Motion detected at: ' + time
         #print 'Motion Detected: ' + time
         client.publish('home/last_motion_detected', time)
         SMS.send_message(text_message)

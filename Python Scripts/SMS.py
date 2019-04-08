@@ -9,5 +9,5 @@ def send_message(message):
   server.starttls()
   server.login(auth[0], auth[1])
 
-  server.sendmail( auth[0], to_number, str(message))
+  server.sendmail( auth[0], to_number, message)
 
