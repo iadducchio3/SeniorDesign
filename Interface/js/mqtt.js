@@ -32,7 +32,6 @@ function onConnect() {
    mqtt.subscribe('home/last_motion_detected');
    mqtt.subscribe('home/temperature_sensor');
    mqtt.subscribe('home/security_triggered');
-   mqtt.subscribe('home/brightness');
 }
 
 function MQTTconnect() {
@@ -137,13 +136,6 @@ function onMessageArrived(message) {
 
          }
          break;
-      case 'home/brightness':
-         document.getElementById('brightness-audio').play();
-         flag = false;
-         slider = document.getElementById("myRange");
-         slider.value = new_message;
-         flag = true;
-         break;
    }
 }
 
@@ -215,7 +207,6 @@ function blind_toggle() {
 function brightness_slider() {
    if (flag) {
       var slider = document.getElementById("myRange");
-      pub(slider.value.toString(), 'home/brightness')
    }
 }
 

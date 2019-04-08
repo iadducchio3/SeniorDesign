@@ -6,7 +6,7 @@
 
 #define DHTPIN 13   
 #define DHTTYPE DHT11
-#define FAN 12
+#define RELAY 12
 #define LIGHT 15
 #define HOME_MOTION 14
 
@@ -43,7 +43,7 @@ void setup() {
     //SUBSCRIBE TO FEED
     mqtt.subscribe(&air_conditioning_subscription);
     mqtt.subscribe(&light_power_subscription); 
-    //pinMode(FAN,OUTPUT);
+    pinMode(RELAY,OUTPUT);
     pinMode(HOME_MOTION,INPUT);
     pinMode(LIGHT,OUTPUT);
     mqttConnect(mqtt);
@@ -58,6 +58,7 @@ void loop() {
   //Serial.println(new_temp);
   if(isnan(new_temp)){
     new_temp = last_temp;
+    Serial.println(new_temp);
   }
   if(new_temp!= last_temp){
     last_temp = new_temp;
@@ -76,20 +77,18 @@ void loop() {
     if (subscription == &air_conditioning_subscription) { 
       char *message = (char *)air_conditioning_subscription.lastread; 
       if((String)message == "on"){
-        //digitalWrite(FAN,HIGH);
+        digitalWrite(RELAY,HIGH);
       }
       else if((String)message == "off"){
-        //digitalWrite(FAN,LOW);
+        digitalWrite(RELAY,LOW);
       }
     }
     else if(subscription == &light_power_subscription){
       char *message = (char *)light_power_subscription.lastread;
       if((String)message == "on"){
-          Serial.println("Turning Lights on");
           digitalWrite(LIGHT,HIGH);
       }
-      else if((String)message == "off"){
-        Serial.println("Powering off Lights");
+      else if((String)message == "off"){    
         digitalWrite(LIGHT,LOW);
       }
     }

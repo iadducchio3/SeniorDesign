@@ -2,7 +2,7 @@ import smtplib
 
 
 def send_message(message):
-  to_number = '9372397094@txt.att.net'
+  to_number = '9372397094@tmomail.net'
   auth = ('iadducchio3@gmail.com', '1224ia$$GOOGLE')
 
   server = smtplib.SMTP( "smtp.gmail.com", 587 )
