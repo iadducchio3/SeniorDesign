@@ -2,6 +2,7 @@ import smtplib
 
 
 def send_message(message):
+  print('!!!!!!!!!!!!!!',message,'!!!!!!!!!!!!!!!!!!!!')
   to_number = '9374741463@vtext.com'
   auth = ('iadducchio3@gmail.com', '1224ia$$GOOGLE')
 
