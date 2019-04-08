@@ -2,7 +2,6 @@ import smtplib
 
 
 def send_message(message):
-  print('!!!!!!!!!!!!!!',message,'!!!!!!!!!!!!!!!!!!!!')
   to_number = '9374741463@vtext.com'
   auth = ('iadducchio3@gmail.com', '1224ia$$GOOGLE')
 
@@ -10,5 +9,5 @@ def send_message(message):
   server.starttls()
   server.login(auth[0], auth[1])
 
-  server.sendmail( auth[0], to_number, message)
+  server.sendmail( auth[0], to_number, str(message))
 
