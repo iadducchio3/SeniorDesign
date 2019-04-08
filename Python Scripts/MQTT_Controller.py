@@ -80,10 +80,11 @@ def on_message(client, userdata, msg):
     elif new_message == 'home/security_motion':
         dt = datetime.datetime.now()
         time = dt.strftime('%d %b %Y') + ' | ' + dt.strftime('%I:%M %p')
-        print('Motion detected at: %s ' % time)
+        
+        text_message = 'Motion detected at: %s ' % time
         #print 'Motion Detected: ' + time
         client.publish('home/last_motion_detected', time)
-        SMS.send_message('Motion detected at: %s ' % time)
+        SMS.send_message(text_message)
         client.publish('home/security_light', 'on')
     elif new_message == 'home/home_motion':
         last_home_motion = datetime.datetime.now()
