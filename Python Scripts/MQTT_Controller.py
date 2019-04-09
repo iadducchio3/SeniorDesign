@@ -73,7 +73,7 @@ def on_message(client, userdata, msg):
     
     elif new_message == 'home/light_intensity':
     	if int(msg.payload) > 80:
-    		controlBlinds()
+            client.publish('home/blind_status','open')
     		last_light_status = 'off'
     		client.publish('home/light_power','off')
 

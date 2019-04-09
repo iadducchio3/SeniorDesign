@@ -7,7 +7,7 @@
 
 #define SECURITY_MOTION 13
 #define ALARM 12
-#define SERVO 0
+#define SERVO 4
 #define PHOTOCELL A0
  
 /**** CREATE MQTT CLIENT ****/
@@ -97,9 +97,6 @@ void loop() {
   if(last_light_intensity+3 < new_light_intensity || last_light_intensity -3 > new_light_intensity){
     light_intesity_publish.publish(new_light_intensity);
     last_light_intensity = new_light_intensity;
-    if(new_light_intensity > 80){
-      last_blind_status = "open";
-    }
   }
 
   //READ SUBSCRIPTION
